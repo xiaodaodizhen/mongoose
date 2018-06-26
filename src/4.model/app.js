@@ -15,9 +15,20 @@ app.get("/signup", (req, res) => {
 });
 app.post("/signup", (req, res) => {
   let user = req.body;
-  user.password = crypto.createHmac("SHA256", "test").update(user.password).digest("hex");
+  // user.password = crypto.createHmac("SHA256", "test").update(user.password).digest("hex");
+  // 第一种插入数据方法
+  // User.create(user, (err, doc) => {
+  //   if (err) {
+  //     res.redirect("back");
+  //   } else {
+  //     res.redirect('/signin');
+  //   }
+  // });
 
-  User.create(user, (err, doc) => {
+  // 第二种插入数据方法
+  user = new User(user);
+  user.save(function (err, doc) {
+    console.log(res.redirect);
     if (err) {
       res.redirect("back");
     } else {
@@ -28,8 +39,8 @@ app.post("/signup", (req, res) => {
 
 app.get("/signin", (req, res) => {
   let user = req.body;
-    user.password = crypto.createHmac("sha256", "xgtest").update(user.password).digest("hex");
-  User.findOne(user, (err, res) => {
+  // user.password = crypto.createHmac("sha256", "xgtest").update(user.password).digest("hex");
+  User.findOne(user, (err) => {
     if (err) {
       res.redirect("back");
     } else {
